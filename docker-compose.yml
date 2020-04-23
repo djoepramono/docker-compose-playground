@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  api:
+    image: node:14
+    network_mode: host
+    volumes:
+      - ./simple-api:/app
+    environment:
+      PORT: 3001
+    working_dir: /app
+    ports:
+      - 3001:3001
+    entrypoint: ["bash","-c","node index.js"]
+  client:
+    image: node:14 
+    network_mode: host
+    volumes:
+      - ./simple-client:/app
+    environment:
+      API_URL: http://localhost:3001
+    working_dir: /app
+    ports:
+      - 3001:3001
+    depends_on:
+      - api
